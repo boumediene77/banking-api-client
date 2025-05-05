@@ -70,7 +70,6 @@ class BankingAPIClient:
             "scope": "stet"
         }
         
-        # Utilisation de data au lieu de json et ajout du header Content-Type approprié
         headers = {"Content-Type": "application/x-www-form-urlencoded"}
         response = self.session.post(auth_url, data=auth_data, headers=headers)
         response.raise_for_status()
@@ -98,7 +97,7 @@ class BankingAPIClient:
             "scope": "stet"
         }
         
-        # Utilisation de data au lieu de json et ajout du header Content-Type approprié
+        
         headers = {"Content-Type": "application/x-www-form-urlencoded"}
         async with self.session.post(auth_url, data=auth_data, headers=headers) as response:
             response.raise_for_status()
@@ -118,7 +117,7 @@ class BankingAPIClient:
         if not self.token:
             raise ValueError("Not authenticated. Call authenticate() first")
         
-        # Utiliser le token_type stocké, avec "bearer" comme valeur par défaut
+        
         token_type = getattr(self, "token_type", "bearer")
         
         return {
@@ -136,7 +135,7 @@ class BankingAPIClient:
         if self.use_async:
             raise RuntimeError("Use get_identity_async for async mode")
         
-        # Correction de l'URL : /stet/identity au lieu de /identity
+        
         url = f"{self.base_url}/stet/identity"
         response = self.session.get(url, headers=self._get_headers())
         response.raise_for_status()
@@ -152,7 +151,7 @@ class BankingAPIClient:
         if not self.use_async:
             raise RuntimeError("Use get_identity for sync mode")
         
-        # Correction de l'URL : /stet/identity au lieu de /identity
+        
         url = f"{self.base_url}/stet/identity"
         async with self.session.get(url, headers=self._get_headers()) as response:
             response.raise_for_status()
@@ -354,9 +353,7 @@ class BankingDataCollector:
         # Get accounts
         accounts = await self.client.get_accounts_async()
         
-        # Problem: Get balances and transactions for each account
-        # Fix: Instead of parallel calls which might cause token issues,
-        # do them sequentially to ensure token validity
+
         for account in accounts:
             account_id = account.get("id")
             # Get balances and transactions sequentially for each account

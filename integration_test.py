@@ -27,7 +27,7 @@ def test_sync_client():
             
             # Get identity
             identity = client.get_identity()
-            # Construire le nom complet à partir des champs disponibles
+            
             first_name = identity.get('first_name', '')
             last_name = identity.get('last_name', '')
             prefix = identity.get('prefix', '')
@@ -45,9 +45,9 @@ def test_sync_client():
                 
                 # Get balances
                 balances = client.get_balances(account_id)
-                # Gérer le cas où balances est une liste
+                
                 if isinstance(balances, list) and balances:
-                    balance = balances[0]  # Premier élément de la liste
+                    balance = balances[0]  
                     print(f"    Balance: {balance.get('amount')} {balance.get('currency')}")
                 else:
                     print(f"    Balance: {balances}")
@@ -56,7 +56,7 @@ def test_sync_client():
                 transactions = client.get_transactions(account_id)
                 print(f"    Transactions: {len(transactions)}")
                 
-                # Afficher la première transaction sans appeler get_transaction
+                
                 if transactions:
                     first_transaction = transactions[0]
                     print(f"    First transaction: {first_transaction.get('amount')} {first_transaction.get('currency')} - {first_transaction.get('label')}")
@@ -86,7 +86,7 @@ async def test_async_client():
             
             # Get identity
             identity = await client.get_identity_async()
-            # Construire le nom complet à partir des champs disponibles
+            
             first_name = identity.get('first_name', '')
             last_name = identity.get('last_name', '')
             prefix = identity.get('prefix', '')
@@ -104,9 +104,9 @@ async def test_async_client():
                 
                 # Get balances
                 balances = await client.get_balances_async(account_id)
-                # Gérer le cas où balances est une liste
+                
                 if isinstance(balances, list) and balances:
-                    balance = balances[0]  # Premier élément de la liste
+                    balance = balances[0]  
                     print(f"    Balance: {balance.get('amount')} {balance.get('currency')}")
                 else:
                     print(f"    Balance: {balances}")
@@ -115,7 +115,7 @@ async def test_async_client():
                 transactions = await client.get_transactions_async(account_id)
                 print(f"    Transactions: {len(transactions)}")
                 
-                # Afficher la première transaction sans appeler get_transaction_async
+                
                 if transactions:
                     first_transaction = transactions[0]
                     print(f"    First transaction: {first_transaction.get('amount')} {first_transaction.get('currency')} - {first_transaction.get('label')}")
@@ -149,7 +149,7 @@ async def test_data_collector():
             # Collect all data
             data = collector.collect_all_data()
             
-            # Save to file with proper UTF-8 handling
+           
             with open("banking_data_sync.json", "w", encoding="utf-8") as f:
                 json.dump(data, f, indent=2, ensure_ascii=False)
             
@@ -182,7 +182,7 @@ async def test_data_collector():
             # Collect all data
             data = await collector.collect_all_data_async()
             
-            # Save to file with proper UTF-8 handling
+            
             with open("banking_data_async.json", "w", encoding="utf-8") as f:
                 json.dump(data, f, indent=2, ensure_ascii=False)
             

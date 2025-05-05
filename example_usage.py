@@ -24,11 +24,11 @@ def sync_example():
         data = collector.collect_all_data()
         
         # Pretty print the data with proper UTF-8 handling
-        print(json.dumps(data, indent=2, ensure_ascii=False))  # Added ensure_ascii=False
+        print(json.dumps(data, indent=2, ensure_ascii=False)) 
         
         # Save to file with proper UTF-8 handling
-        with open("banking_data_sync.json", "w", encoding="utf-8") as f:  # Added encoding="utf-8"
-            json.dump(data, f, indent=2, ensure_ascii=False)  # Added ensure_ascii=False
+        with open("banking_data_sync.json", "w", encoding="utf-8") as f:  
+            json.dump(data, f, indent=2, ensure_ascii=False) 
         
         print("Data saved to banking_data_sync.json")
 
@@ -51,11 +51,11 @@ async def async_example():
         data = await collector.collect_all_data_async()
         
         # Pretty print the data with proper UTF-8 handling
-        print(json.dumps(data, indent=2, ensure_ascii=False))  # Added ensure_ascii=False
+        print(json.dumps(data, indent=2, ensure_ascii=False)) 
         
         # Save to file with proper UTF-8 handling
-        with open("banking_data_async.json", "w", encoding="utf-8") as f:  # Added encoding="utf-8"
-            json.dump(data, f, indent=2, ensure_ascii=False)  # Added ensure_ascii=False
+        with open("banking_data_async.json", "w", encoding="utf-8") as f:  
+            json.dump(data, f, indent=2, ensure_ascii=False) 
         
         print("Data saved to banking_data_async.json")
 
