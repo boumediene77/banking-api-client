@@ -3,13 +3,14 @@ from setuptools import setup, find_packages
 setup(
     name="banking-api-client",
     version="0.1.0",
-    packages=find_packages(),
+    package_dir={"": "src"},
+    packages=find_packages(where="src"),
     install_requires=[
         "requests>=2.25.0",
         "aiohttp>=3.7.0",
     ],
     python_requires=">=3.7",
-    author="Boumediene MAROUF ",
+    author="Boumediene MAROUF",
     author_email="boumedienemar@gmail.com",
     description="A library to consume the Banking API",
     keywords="banking, api, client",

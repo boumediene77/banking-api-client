@@ -15,38 +15,29 @@ A Python library to consume the Banking API available at https://dsp2-technical-
 - Modular and generic design
 - Compatible with Python 3.7+ (recommended: Python 3.11+)
 
-## Available Functions
+## Project Structure
 
-The `banking_api_client.py` module provides two main classes:
-
-### BankingAPIClient
-
-The `BankingAPIClient` class provides both synchronous and asynchronous methods to interact with the Banking API:
-
-#### Synchronous Methods
-- `authenticate()`: Authenticate with the API and retrieve a token
-- `get_identity()`: Get user identity information
-- `get_accounts()`: Get all accounts
-- `get_account(account_id)`: Get a specific account by ID
-- `get_balances(account_id)`: Get balances for an account
-- `get_transactions(account_id)`: Get transactions for an account
-
-#### Asynchronous Methods
-- `authenticate_async()`: Authenticate with the API asynchronously
-- `get_identity_async()`: Get user identity information asynchronously
-- `get_accounts_async()`: Get all accounts asynchronously
-- `get_account_async(account_id)`: Get a specific account by ID asynchronously
-- `get_balances_async(account_id)`: Get balances for an account asynchronously
-- `get_transactions_async(account_id)`: Get transactions for an account asynchronously
-
-### BankingDataCollector
-
-The `BankingDataCollector` class provides methods to collect all data in a single operation:
-
-- `collect_all_data()`: Collect all data synchronously
-- `collect_all_data_async()`: Collect all data asynchronously
-
-Both classes support the context manager protocol for proper resource management.
+```
+banking-api-client/
+├── src/
+│   └── banking_api_client/
+│       ├── __init__.py       # Package initialization
+│       ├── client.py         # BankingAPIClient class
+│       ├── collector.py      # BankingDataCollector class
+│       ├── exceptions.py     # Custom exceptions
+│       └── utils.py          # Utility functions
+├── tests/
+│   ├── unit/                 # Unit tests
+│   │   ├── test_client.py    # Tests for BankingAPIClient
+│   │   └── test_collector.py # Tests for BankingDataCollector
+│   └── integration/
+│       └── test_integration.py # Integration tests with real API calls
+├── examples/
+│   └── example_usage.py      # Example usage of the library
+├── README.md                 # Project documentation
+├── setup.py                  # Package configuration
+└── requirements.txt          # Dependencies
+```
 
 ## Installation
 
@@ -184,11 +175,10 @@ with BankingAPIClient("https://dsp2-technical-test.iliad78.net", "mdupuis", "111
         json.dump(all_data, f, indent=2, ensure_ascii=False)
 ```
 
-
-## Running the Example
+## Running the Examples
 
 ```bash
-python example_usage.py
+python -m examples.example_usage
 ```
 
 ## Tests
@@ -196,74 +186,17 @@ python example_usage.py
 ### Unit Tests
 
 ```bash
-python -m unittest tests.py
+python -m unittest discover -s tests/unit
 ```
 
 ### Integration Tests
 
 ```bash
-python integration_test.py
+python -m tests.integration.test_integration
 ```
-
-
 
 ## Notes
 
 - The data is static and subject to change
 - Data consistency is not guaranteed (e.g., balance amount may not be consistent with transactions)
-
-- The question of verifying whether the balance matches the sum of transactions is very pertinent and deserves consideration.
-
-- An ideal implementation might look like this:
-
-```python
-def verify_account_consistency(self, account_data, strict=False):
-    """
-    Verifies consistency between an account's balance and its transactions.
-    
-    Args:
-        account_data: Account data including balances and transactions
-        strict: If True, raises an exception in case of inconsistency; otherwise, returns False
-    
-    Returns:
-        bool: True if the data is consistent, False otherwise
-    """
-    balances = account_data.get("balances", {})
-    transactions = account_data.get("transactions", [])
-    
-    # Handle the case where balances is a list
-    if isinstance(balances, list) and balances:
-        balance_data = balances[0]
-        official_balance = balance_data.get("amount", 0)
-    else:
-        official_balance = balances.get("amount", 0)
-    
-    calculated_balance = sum(tx.get("amount", 0) for tx in transactions)
-    
-    # Tolerance for rounding errors
-    is_consistent = abs(official_balance - calculated_balance) < 0.01
-    
-    if not is_consistent and strict:
-        raise ValueError(
-            f"Inconsistency detected: Official balance {official_balance} ≠ "
-            f"Sum of transactions {calculated_balance}"
-        )
-    
-    return is_consistent
-```
-
-- This function could be added to the `BankingDataCollector` class and used optionally:
-
-```python
-# Example usage
-collector = BankingDataCollector(client)
-data = collector.collect_all_data()
-
-# Optional consistency check
-for account in data["accounts"]:
-    is_consistent = collector.verify_account_consistency(account)
-    if not is_consistent:
-        print(f"Warning: Inconsistency detected for account {account.get('id')}")
-```
-
-
+- The `verify_account_consistency` method in the `BankingDataCollector` class can be used to check if the balance matches the sum of transactions
