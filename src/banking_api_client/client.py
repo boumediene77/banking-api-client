@@ -27,12 +27,12 @@ class BankingAPIClient:
             raise ValueError("Invalid URL format. Must begin with http:// or https://")
             
         self.base_url = base_url.rstrip('/')
-        self._username = username  # Private attribute for security
-        self._password = password  # Private attribute for security
+        self._username = username  
+        self._password = password  
         self.use_async = use_async
         self.session = None
         self.token = None
-        self.token_type = "bearer"  # Default value
+        self.token_type = "bearer"  
     
     def __enter__(self):
         """Context manager entry."""
